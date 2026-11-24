@@ -3,346 +3,351 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>App Store Search & GET Banner</title>
+  <title>Top Banner & App Launcher</title>
   <style>
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 20px 16px 120px;
+      padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      background: #0d0f14;
-      color: #f4f6fa;
-    }
-    .container {
-      max-width: 540px;
-      margin: 0 auto;
-    }
-    .panel {
-      background: #171a22;
-      border: 1px solid #2a2f3d;
-      border-radius: 18px;
-      padding: 18px;
-    }
-    h1 {
-      margin: 0 0 6px;
-      font-size: 19px;
-    }
-    .desc {
-      margin: 0 0 16px;
-      font-size: 13px;
-      color: #9aa4b8;
-      line-height: 1.45;
-    }
-    .search-box {
-      position: relative;
-    }
-    input {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 16px;
-      color: #fff;
-      background: #101319;
-      border: 1px solid #32384a;
-      border-radius: 12px;
-      outline: none;
-    }
-    input:focus {
-      border-color: #0a84ff;
-    }
-    .status {
-      margin-top: 8px;
-      font-size: 12px;
-      color: #8f9bb0;
-      min-height: 18px;
-    }
-    .results {
-      margin-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .result-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
-      background: #12151c;
-      border: 1px solid #252a38;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .result-item:hover, .result-item.active {
-      border-color: #0a84ff;
-      background: #182030;
-    }
-    .result-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: #222736;
-    }
-    .result-meta {
-      flex: 1;
-      min-width: 0;
-    }
-    .result-name {
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .result-sub {
-      font-size: 12px;
-      color: #9aa4b8;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .pick-tag {
-      font-size: 11px;
-      font-weight: 700;
-      color: #5ac8fa;
-      flex-shrink: 0;
+      background: #0b0d12;
+      color: #f3f5f9;
     }
 
-    /* แถบ Smart Banner ด้านล่าง */
-    .smart-banner {
-      position: fixed;
-      left: 12px;
-      right: 12px;
-      bottom: 14px;
-      max-width: 640px;
-      margin: 0 auto;
+    /* แถบด้านบนสไตล์รูปที่ 2 */
+    .top-banner {
+      position: sticky;
+      top: 0;
+      z-index: 100;
       display: none;
       align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      background: rgba(26, 29, 38, 0.95);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 18px;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
-      z-index: 999;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(20, 23, 31, 0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
-    .smart-banner.show {
+    .top-banner.show {
       display: flex;
     }
     .banner-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 11px;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
       object-fit: cover;
+      background: #1f2433;
       flex-shrink: 0;
-      background: #232838;
     }
-    .banner-info {
+    .banner-text {
       flex: 1;
       min-width: 0;
     }
     .banner-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
+      line-height: 1.2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .banner-sub {
       font-size: 12px;
-      color: #aeb8cc;
+      color: #a4aec2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .get-btn {
-      flex-shrink: 0;
+    .banner-action {
       background: #0a84ff;
       color: #fff;
       text-decoration: none;
-      font-weight: 700;
       font-size: 13px;
-      letter-spacing: 0.4px;
-      padding: 8px 18px;
+      font-weight: 700;
+      padding: 7px 14px;
       border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: #9aa4b8;
+      font-size: 20px;
+      line-height: 1;
+      padding: 4px 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .main {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 18px 16px 48px;
+    }
+    .card {
+      background: #141821;
+      border: 1px solid #262c3a;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+    .hint {
+      margin: 0 0 14px;
+      font-size: 12.5px;
+      color: #98a2b6;
+      line-height: 1.45;
+    }
+    label {
+      display: block;
+      font-size: 12.5px;
+      color: #c5cedf;
+      margin-bottom: 6px;
+    }
+    input, select {
+      width: 100%;
+      padding: 11px 12px;
+      font-size: 15px;
+      color: #fff;
+      background: #0e1118;
+      border: 1px solid #2d3446;
+      border-radius: 11px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: #0a84ff;
+    }
+    .preset-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .chip {
+      background: #1c2230;
+      border: 1px solid #2e364a;
+      color: #e4e9f2;
+      font-size: 13px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .chip.active {
+      background: #0a84ff;
+      border-color: #0a84ff;
+      color: #fff;
+      font-weight: 600;
+    }
+    .status {
+      font-size: 12px;
+      color: #8f9bb0;
+      min-height: 18px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="panel">
-      <h1>ค้นหาแอป หรือใส่ App Store ID</h1>
-      <p class="desc">พิมพ์ชื่อแอป (เช่น Roblox, YouTube, Discord) หรือพิมพ์แค่ตัวเลข ID ของแอป ระบบจะดึงข้อมูลจริงขึ้นมาให้กด GET</p>
-
-      <div class="search-box">
-        <input
-          id="queryInput"
-          type="text"
-          placeholder="พิมพ์ชื่อแอป หรือตัวเลข App ID..."
-          autocomplete="off"
-          autocapitalize="off"
-        />
-      </div>
-
-      <div class="status" id="statusText">พิมพ์เพื่อเริ่มค้นหา</div>
-      <div class="results" id="resultsList"></div>
+  <div class="top-banner" id="topBanner">
+    <img class="banner-icon" id="bannerIcon" src="" alt="" />
+    <div class="banner-text">
+      <div class="banner-title" id="bannerTitle">App Name</div>
+      <div class="banner-sub" id="bannerSub">รายละเอียดแอป</div>
     </div>
+    <a class="banner-action" id="bannerAction" href="#" target="_blank" rel="noopener">เปิด</a>
+    <button class="close-btn" id="closeBanner" type="button" aria-label="ปิด">✕</button>
   </div>
 
-  <div class="smart-banner" id="smartBanner">
-    <img class="banner-icon" id="bannerIcon" src="" alt="App Icon" />
-    <div class="banner-info">
-      <div class="banner-title" id="bannerTitle">-</div>
-      <div class="banner-sub" id="bannerSub">-</div>
+  <div class="main">
+    <div class="card">
+      <h1>เลือกแอป / ค้นหาแอป</h1>
+      <p class="hint">เลือกแอปด่วน หรือพิมพ์ชื่อแอป / App Store ID เพื่ออัปเดตแถบด้านบน และเลือกโหมดลิงก์ปลายทาง</p>
+
+      <div class="preset-list" id="presetList"></div>
+
+      <label for="searchInput">ค้นหาชื่อแอป หรือกรอก App Store ID</label>
+      <input id="searchInput" type="text" placeholder="เช่น Roblox, Honkai Star Rail, YouTube หรือตัวเลข ID" autocomplete="off" />
+
+      <label for="linkMode">โหมดลิงก์ของปุ่มบนแถบ</label>
+      <select id="linkMode">
+        <option value="appstore">ลิงก์หน้าแอปใน App Store</option>
+        <option value="translate">ลิงก์ผ่าน translate.goog (ตัวอย่างรูปแบบพร็อกซี)</option>
+        <option value="custom">ลิงก์กำหนดเองด้านล่าง</option>
+      </select>
+
+      <div id="customUrlBox" style="display:none;">
+        <label for="customUrlInput">URL ปลายทางที่ต้องการ</label>
+        <input id="customUrlInput" type="url" placeholder="https://..." />
+      </div>
+
+      <label for="actionLabelInput">ข้อความบนปุ่มแถบด้านบน</label>
+      <input id="actionLabelInput" type="text" value="อัปเดต" />
+
+      <div class="status" id="statusText">พร้อมใช้งาน</div>
     </div>
-    <a class="get-btn" id="getBtn" href="https://apps.apple.com" target="_blank" rel="noopener">GET</a>
   </div>
 
   <script>
-    const inputEl = document.getElementById("queryInput");
-    const statusEl = document.getElementById("statusText");
-    const resultsEl = document.getElementById("resultsList");
-    const bannerEl = document.getElementById("smartBanner");
-    const bannerIconEl = document.getElementById("bannerIcon");
-    const bannerTitleEl = document.getElementById("bannerTitle");
-    const bannerSubEl = document.getElementById("bannerSub");
-    const getBtnEl = document.getElementById("getBtn");
+    const PRESETS = [
+      {
+        name: "Roblox",
+        sub: "เล่นเกมนับล้าน",
+        id: "431946152",
+        webUrl: "https://www.roblox.com",
+        icon: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/4e/48/75/4e487532-0872-6520-0f12-45005c38b0a5/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/120x120bb.jpg"
+      },
+      {
+        name: "Honkai: Star Rail",
+        sub: "Games",
+        id: "1599719154",
+        webUrl: "https://hsr.hoyoverse.com",
+        icon: ""
+      },
+      {
+        name: "YouTube",
+        sub: "Video & Music",
+        id: "544007664",
+        webUrl: "https://m.youtube.com",
+        icon: ""
+      }
+    ];
 
+    const topBanner = document.getElementById("topBanner");
+    const bannerIcon = document.getElementById("bannerIcon");
+    const bannerTitle = document.getElementById("bannerTitle");
+    const bannerSub = document.getElementById("bannerSub");
+    const bannerAction = document.getElementById("bannerAction");
+    const closeBanner = document.getElementById("closeBanner");
+
+    const presetList = document.getElementById("presetList");
+    const searchInput = document.getElementById("searchInput");
+    const linkMode = document.getElementById("linkMode");
+    const customUrlBox = document.getElementById("customUrlBox");
+    const customUrlInput = document.getElementById("customUrlInput");
+    const actionLabelInput = document.getElementById("actionLabelInput");
+    const statusText = document.getElementById("statusText");
+
+    let currentApp = PRESETS[0];
     let debounceTimer = null;
-    let requestCounter = 0;
+    let reqSeq = 0;
 
-    function jsonp(url, callbackName) {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error("timeout"));
-        }, 8000);
-
-        function cleanup() {
-          clearTimeout(timeout);
-          if (script.parentNode) script.parentNode.removeChild(script);
-          try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
-        }
-
-        window[callbackName] = (data) => {
-          cleanup();
-          resolve(data);
-        };
-
-        script.src = `${url}${url.includes("?") ? "&" : "?"}callback=${callbackName}`;
-        script.onerror = () => {
-          cleanup();
-          reject(new Error("network"));
-        };
-        document.body.appendChild(script);
-      });
+    function buildTargetUrl(app) {
+      const mode = linkMode.value;
+      if (mode === "custom") {
+        return customUrlInput.value.trim() || "https://apps.apple.com";
+      }
+      if (mode === "translate") {
+        const raw = app.webUrl || `https://apps.apple.com/app/id${app.id}`;
+        const parsed = new URL(raw);
+        const hostDashed = parsed.hostname.replace(/\./g, "-");
+        return `https://${hostDashed}.translate.goog${parsed.pathname}${parsed.search}?_x_tr_sl=en&_x_tr_tl=th&_x_tr_hl=th&_x_tr_pto=wapp`;
+      }
+      return app.trackViewUrl || (app.id ? `https://apps.apple.com/app/id${app.id}` : "https://apps.apple.com");
     }
 
-    function selectApp(app) {
-      const iconUrl = app.artworkUrl100 || app.artworkUrl60 || "";
-      bannerTitleEl.textContent = app.trackName || `App #${app.trackId}`;
-      bannerSubEl.textContent = `${app.artistName || "App Store"} • ID: ${app.trackId}`;
-      getBtnEl.href = app.trackViewUrl || `https://apps.apple.com/app/id${app.trackId}`;
+    function renderBanner() {
+      if (!currentApp) return;
+      bannerTitle.textContent = currentApp.name || "App";
+      bannerSub.textContent = currentApp.sub || (currentApp.id ? `ID: ${currentApp.id}` : "App");
+      bannerAction.textContent = actionLabelInput.value.trim() || "เปิด";
+      bannerAction.href = buildTargetUrl(currentApp);
 
-      if (iconUrl) {
-        bannerIconEl.src = iconUrl;
-        bannerIconEl.style.display = "block";
+      if (currentApp.icon) {
+        bannerIcon.src = currentApp.icon;
+        bannerIcon.style.display = "block";
       } else {
-        bannerIconEl.style.display = "none";
+        bannerIcon.style.display = "none";
       }
 
-      bannerEl.classList.add("show");
+      topBanner.classList.add("show");
+    }
 
-      document.querySelectorAll(".result-item").forEach((el) => {
-        el.classList.toggle("active", el.dataset.id === String(app.trackId));
+    function jsonp(url, cbName) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        const timer = setTimeout(() => { cleanup(); reject(new Error("timeout")); }, 8000);
+        function cleanup() {
+          clearTimeout(timer);
+          if (s.parentNode) s.parentNode.removeChild(s);
+          try { delete window[cbName]; } catch (_) { window[cbName] = undefined; }
+        }
+        window[cbName] = (data) => { cleanup(); resolve(data); };
+        s.src = `${url}${url.includes("?") ? "&" : "?"}callback=${cbName}`;
+        s.onerror = () => { cleanup(); reject(new Error("err")); };
+        document.body.appendChild(s);
       });
     }
 
-    function renderResults(apps) {
-      resultsEl.innerHTML = "";
-      if (!apps || apps.length === 0) {
-        statusEl.textContent = "ไม่พบแอปที่ตรงกัน";
-        return;
-      }
-
-      statusEl.textContent = `พบ ${apps.length} แอป — แตะเพื่อเลือกแล้วกด GET ที่แถบด้านล่าง`;
-
-      apps.forEach((app) => {
-        const item = document.createElement("div");
-        item.className = "result-item";
-        item.dataset.id = String(app.trackId);
-
-        const img = document.createElement("img");
-        img.className = "result-icon";
-        img.src = app.artworkUrl100 || app.artworkUrl60 || "";
-        img.alt = app.trackName || "";
-
-        const meta = document.createElement("div");
-        meta.className = "result-meta";
-
-        const name = document.createElement("div");
-        name.className = "result-name";
-        name.textContent = app.trackName;
-
-        const sub = document.createElement("div");
-        sub.className = "result-sub";
-        sub.textContent = `${app.artistName} • ID: ${app.trackId}`;
-
-        const tag = document.createElement("span");
-        tag.className = "pick-tag";
-        tag.textContent = "เลือก";
-
-        meta.appendChild(name);
-        meta.appendChild(sub);
-        item.appendChild(img);
-        item.appendChild(meta);
-        item.appendChild(tag);
-
-        item.addEventListener("click", () => selectApp(app));
-        resultsEl.appendChild(item);
-      });
-
-      // เลือกผลลัพธ์แรกให้อัตโนมัติเลย
-      selectApp(apps[0]);
-    }
-
-    async function runQuery(rawValue) {
-      const q = rawValue.trim();
+    async function searchAppStore(raw) {
+      const q = raw.trim();
       if (!q) {
-        resultsEl.innerHTML = "";
-        bannerEl.classList.remove("show");
-        statusEl.textContent = "พิมพ์เพื่อเริ่มค้นหา";
+        statusText.textContent = "พร้อมใช้งาน";
         return;
       }
+      const seq = ++reqSeq;
+      const isId = /^\d+$/.test(q);
+      statusText.textContent = isId ? `กำลังดึงข้อมูล App ID ${q}...` : `กำลังค้นหา "${q}"...`;
 
-      const currentId = ++requestCounter;
-      const isOnlyDigits = /^\d+$/.test(q);
-      statusEl.textContent = isOnlyDigits ? `กำลังตรวจสอบ App ID ${q}...` : `กำลังค้นหา "${q}"...`;
-
-      const cbName = `_itunesCb_${currentId}_${Date.now()}`;
-      const endpoint = isOnlyDigits
+      const cb = `_cb_${seq}_${Date.now()}`;
+      const url = isId
         ? `https://itunes.apple.com/lookup?id=${encodeURIComponent(q)}&entity=software`
-        : `https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=software&limit=6`;
+        : `https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=software&limit=1`;
 
       try {
-        const data = await jsonp(endpoint, cbName);
-        if (currentId !== requestCounter) return;
-        const apps = (data.results || []).filter((item) => item.wrapperType === "software" || item.kind === "software");
-        renderResults(apps);
-      } catch (err) {
-        if (currentId !== requestCounter) return;
-        statusEl.textContent = "ดึงข้อมูลจาก App Store ไม่สำเร็จ (ลองพิมพ์ใหม่หรือเช็กการเชื่อมต่อ)";
+        const res = await jsonp(url, cb);
+        if (seq !== reqSeq) return;
+        const hit = (res.results || []).find((x) => x.wrapperType === "software" || x.kind === "software");
+        if (!hit) {
+          statusText.textContent = "ไม่พบแอปที่ตรงกัน";
+          return;
+        }
+        currentApp = {
+          name: hit.trackName,
+          sub: hit.primaryGenreName || hit.artistName || `ID: ${hit.trackId}`,
+          id: String(hit.trackId),
+          icon: hit.artworkUrl100 || hit.artworkUrl60 || "",
+          webUrl: hit.artistViewUrl || hit.trackViewUrl,
+          trackViewUrl: hit.trackViewUrl
+        };
+        document.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+        renderBanner();
+        statusText.textContent = `อัปเดตแถบเป็น "${currentApp.name}" แล้ว`;
+      } catch (_) {
+        if (seq !== reqSeq) return;
+        statusText.textContent = "ค้นหาไม่สำเร็จ ลองใหม่อีกครั้ง";
       }
     }
 
-    inputEl.addEventListener("input", () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => runQuery(inputEl.value), 300);
+    PRESETS.forEach((p, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chip" + (idx === 0 ? " active" : "");
+      btn.textContent = p.name;
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+        btn.classList.add("active");
+        currentApp = { ...p };
+        renderBanner();
+        statusText.textContent = `เลือก ${p.name} แล้ว`;
+      });
+      presetList.appendChild(btn);
     });
+
+    closeBanner.addEventListener("click", () => topBanner.classList.remove("show"));
+    searchInput.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => searchAppStore(searchInput.value), 350);
+    });
+    linkMode.addEventListener("change", () => {
+      customUrlBox.style.display = linkMode.value === "custom" ? "block" : "none";
+      renderBanner();
+    });
+    customUrlInput.addEventListener("input", renderBanner);
+    actionLabelInput.addEventListener("input", renderBanner);
+
+    renderBanner();
   </script>
 </body>
 </html>
