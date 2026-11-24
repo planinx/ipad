@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>App Store Search & GET Banner</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px 16px 120px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      background: #0d0f14;
+      color: #f4f6fa;
+    }
+    .container {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+    .panel {
+      background: #171a22;
+      border: 1px solid #2a2f3d;
+      border-radius: 18px;
+      padding: 18px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 19px;
+    }
+    .desc {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: #9aa4b8;
+      line-height: 1.45;
+    }
+    .search-box {
+      position: relative;
+    }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      color: #fff;
+      background: #101319;
+      border: 1px solid #32384a;
+      border-radius: 12px;
+      outline: none;
+    }
+    input:focus {
+      border-color: #0a84ff;
+    }
+    .status {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #8f9bb0;
+      min-height: 18px;
+    }
+    .results {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .result-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #12151c;
+      border: 1px solid #252a38;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .result-item:hover, .result-item.active {
+      border-color: #0a84ff;
+      background: #182030;
+    }
+    .result-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #222736;
+    }
+    .result-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .result-name {
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .result-sub {
+      font-size: 12px;
+      color: #9aa4b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pick-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #5ac8fa;
+      flex-shrink: 0;
+    }
+
+    /* แถบ Smart Banner ด้านล่าง */
+    .smart-banner {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 14px;
+      max-width: 640px;
+      margin: 0 auto;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(26, 29, 38, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+      z-index: 999;
+    }
+    .smart-banner.show {
+      display: flex;
+    }
+    .banner-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 11px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #232838;
+    }
+    .banner-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .banner-title {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .banner-sub {
+      font-size: 12px;
+      color: #aeb8cc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .get-btn {
+      flex-shrink: 0;
+      background: #0a84ff;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      padding: 8px 18px;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="panel">
+      <h1>ค้นหาแอป หรือใส่ App Store ID</h1>
+      <p class="desc">พิมพ์ชื่อแอป (เช่น Roblox, YouTube, Discord) หรือพิมพ์แค่ตัวเลข ID ของแอป ระบบจะดึงข้อมูลจริงขึ้นมาให้กด GET</p>
+
+      <div class="search-box">
+        <input
+          id="queryInput"
+          type="text"
+          placeholder="พิมพ์ชื่อแอป หรือตัวเลข App ID..."
+          autocomplete="off"
+          autocapitalize="off"
+        />
+      </div>
+
+      <div class="status" id="statusText">พิมพ์เพื่อเริ่มค้นหา</div>
+      <div class="results" id="resultsList"></div>
+    </div>
+  </div>
+
+  <div class="smart-banner" id="smartBanner">
+    <img class="banner-icon" id="bannerIcon" src="" alt="App Icon" />
+    <div class="banner-info">
+      <div class="banner-title" id="bannerTitle">-</div>
+      <div class="banner-sub" id="bannerSub">-</div>
+    </div>
+    <a class="get-btn" id="getBtn" href="https://apps.apple.com" target="_blank" rel="noopener">GET</a>
+  </div>
+
+  <script>
+    const inputEl = document.getElementById("queryInput");
+    const statusEl = document.getElementById("statusText");
+    const resultsEl = document.getElementById("resultsList");
+    const bannerEl = document.getElementById("smartBanner");
+    const bannerIconEl = document.getElementById("bannerIcon");
+    const bannerTitleEl = document.getElementById("bannerTitle");
+    const bannerSubEl = document.getElementById("bannerSub");
+    const getBtnEl = document.getElementById("getBtn");
+
+    let debounceTimer = null;
+    let requestCounter = 0;
+
+    function jsonp(url, callbackName) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error("timeout"));
+        }, 8000);
+
+        function cleanup() {
+          clearTimeout(timeout);
+          if (script.parentNode) script.parentNode.removeChild(script);
+          try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+        }
+
+        window[callbackName] = (data) => {
+          cleanup();
+          resolve(data);
+        };
+
+        script.src = `${url}${url.includes("?") ? "&" : "?"}callback=${callbackName}`;
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("network"));
+        };
+        document.body.appendChild(script);
+      });
+    }
+
+    function selectApp(app) {
+      const iconUrl = app.artworkUrl100 || app.artworkUrl60 || "";
+      bannerTitleEl.textContent = app.trackName || `App #${app.trackId}`;
+      bannerSubEl.textContent = `${app.artistName || "App Store"} • ID: ${app.trackId}`;
+      getBtnEl.href = app.trackViewUrl || `https://apps.apple.com/app/id${app.trackId}`;
+
+      if (iconUrl) {
+        bannerIconEl.src = iconUrl;
+        bannerIconEl.style.display = "block";
+      } else {
+        bannerIconEl.style.display = "none";
+      }
+
+      bannerEl.classList.add("show");
+
+      document.querySelectorAll(".result-item").forEach((el) => {
+        el.classList.toggle("active", el.dataset.id === String(app.trackId));
+      });
+    }
+
+    function renderResults(apps) {
+      resultsEl.innerHTML = "";
+      if (!apps || apps.length === 0) {
+        statusEl.textContent = "ไม่พบแอปที่ตรงกัน";
+        return;
+      }
+
+      statusEl.textContent = `พบ ${apps.length} แอป — แตะเพื่อเลือกแล้วกด GET ที่แถบด้านล่าง`;
+
+      apps.forEach((app) => {
+        const item = document.createElement("div");
+        item.className = "result-item";
+        item.dataset.id = String(app.trackId);
+
+        const img = document.createElement("img");
+        img.className = "result-icon";
+        img.src = app.artworkUrl100 || app.artworkUrl60 || "";
+        img.alt = app.trackName || "";
+
+        const meta = document.createElement("div");
+        meta.className = "result-meta";
+
+        const name = document.createElement("div");
+        name.className = "result-name";
+        name.textContent = app.trackName;
+
+        const sub = document.createElement("div");
+        sub.className = "result-sub";
+        sub.textContent = `${app.artistName} • ID: ${app.trackId}`;
+
+        const tag = document.createElement("span");
+        tag.className = "pick-tag";
+        tag.textContent = "เลือก";
+
+        meta.appendChild(name);
+        meta.appendChild(sub);
+        item.appendChild(img);
+        item.appendChild(meta);
+        item.appendChild(tag);
+
+        item.addEventListener("click", () => selectApp(app));
+        resultsEl.appendChild(item);
+      });
+
+      // เลือกผลลัพธ์แรกให้อัตโนมัติเลย
+      selectApp(apps[0]);
+    }
+
+    async function runQuery(rawValue) {
+      const q = rawValue.trim();
+      if (!q) {
+        resultsEl.innerHTML = "";
+        bannerEl.classList.remove("show");
+        statusEl.textContent = "พิมพ์เพื่อเริ่มค้นหา";
+        return;
+      }
+
+      const currentId = ++requestCounter;
+      const isOnlyDigits = /^\d+$/.test(q);
+      statusEl.textContent = isOnlyDigits ? `กำลังตรวจสอบ App ID ${q}...` : `กำลังค้นหา "${q}"...`;
+
+      const cbName = `_itunesCb_${currentId}_${Date.now()}`;
+      const endpoint = isOnlyDigits
+        ? `https://itunes.apple.com/lookup?id=${encodeURIComponent(q)}&entity=software`
+        : `https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=software&limit=6`;
+
+      try {
+        const data = await jsonp(endpoint, cbName);
+        if (currentId !== requestCounter) return;
+        const apps = (data.results || []).filter((item) => item.wrapperType === "software" || item.kind === "software");
+        renderResults(apps);
+      } catch (err) {
+        if (currentId !== requestCounter) return;
+        statusEl.textContent = "ดึงข้อมูลจาก App Store ไม่สำเร็จ (ลองพิมพ์ใหม่หรือเช็กการเชื่อมต่อ)";
+      }
+    }
+
+    inputEl.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => runQuery(inputEl.value), 300);
+    });
+  </script>
+</body>
+</html>
